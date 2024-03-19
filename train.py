@@ -31,7 +31,7 @@ def train(args):
     g_criterion = GeneratorLoss(alpha=100)
     d_criterion = DiscriminatorLoss()
     # dataset
-    dataset = mask.Mask(root='.', transform=transforms, mode='train')
+    dataset = mask.Mask(path=args.dataset_path, transform=transforms, mode='train')
     dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
 
     logger = Logger(filename=args.dataset)
@@ -90,16 +90,18 @@ if __name__ == "__main__":
 
     # Create the parser
     parser = argparse.ArgumentParser(prog ='top', description='Train Pix2Pix')
-    parser.add_argument("--epochs", type=int, default=200, help="Number of epochs")
-    parser.add_argument("--dataset", type=str, default="mask", help="Name of the dataset: ['mask', '???', '???']")
-    parser.add_argument("--batch_size", type=int, default=8, help="Size of the batches")
-    parser.add_argument("--lr", type=float, default=0.0002, help="Adams learning rate")
+    parser.add_argument("--epochs", type=int, default=400, help="Number of epochs")
+    parser.add_argument("--dataset", type=str, default="mask", help="Name of the train dataset")
+    parser.add_argument("--dataset-path", type=str, default="./images/train", help="Path to the train dataset")
+    parser.add_argument("--batch_size", type=int, default=2, help="Size of the batches")
+    parser.add_argument("--lr", type=float, default=0.0001, help="Adams learning rate")
     args = parser.parse_args()
 
     # Now you can access the arguments just like you would with args parsed from command-line
-    print(args.epochs)
-    print(args.dataset)
-    print(args.batch_size)
-    print(args.lr)
+    print(f"Train {args.epochs} epochs")
+    print(f"Using {args.dataset} dataset")
+    print(f"Dataset path is {args.dataset_path}")
+    print("Batch size is", args.batch_size)
+    print("Learning rate is", args.lr)
 
     train(args)

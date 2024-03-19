@@ -4,12 +4,11 @@ from torch.utils.data import Dataset
 
 class Mask(Dataset):
     def __init__(self,
-                 root: str='.',
+                 path: str='.',
                  transform=None,
                  mode: str='train',
                  direction: str='A2B'):
-        self.root=root
-        self.files=sorted(glob.glob(f"{root}/mask/train/*.png"))
+        self.files=sorted(glob.glob(f"{path}/*.png"))
         self.transform=transform
         self.mode=mode
         self.direction=direction
