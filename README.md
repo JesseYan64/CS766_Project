@@ -1,5 +1,12 @@
 # CS766_Project
 
+We provided a requirements.txt for recreating the virtual environment.
+```
+python3 -m venv cv
+source ./cv/bin/activate
+pip install -r requirements.txt
+```
+
 To preprocess the dataset, run
 ```
 python preprocess.py
