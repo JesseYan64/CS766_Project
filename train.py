@@ -93,7 +93,7 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, default=400, help="Number of epochs")
     parser.add_argument("--dataset", type=str, default="mask", help="Name of the train dataset")
     parser.add_argument("--dataset-path", type=str, default="./images/train", help="Path to the train dataset")
-    parser.add_argument("--batch_size", type=int, default=2, help="Size of the batches")
+    parser.add_argument("--batch-size", type=int, default=2, help="Size of the batches")
     parser.add_argument("--lr", type=float, default=0.0001, help="Adams learning rate")
     args = parser.parse_args()
 
