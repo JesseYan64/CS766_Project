@@ -12,7 +12,7 @@ from gan.discriminator import ConditionalDiscriminator
 from gan.criterion import GeneratorLoss, DiscriminatorLoss
 from gan.utils import Logger, initialize_weights
 
-from dataset import mask
+from dataset import Mask
 
 def train(args):
     device = ('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -31,7 +31,7 @@ def train(args):
     g_criterion = GeneratorLoss(alpha=100)
     d_criterion = DiscriminatorLoss()
     # dataset
-    dataset = mask.Mask(path=args.dataset_path, transform=transforms, mode='train')
+    dataset = Mask(path=args.dataset_path, transform=transforms, mode='train')
     dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
 
     logger = Logger(filename=args.dataset)
@@ -90,10 +90,10 @@ if __name__ == "__main__":
 
     # Create the parser
     parser = argparse.ArgumentParser(prog ='top', description='Train Pix2Pix')
-    parser.add_argument("--epochs", type=int, default=400, help="Number of epochs")
+    parser.add_argument("--epochs", type=int, default=1, help="Number of epochs")
     parser.add_argument("--dataset", type=str, default="mask", help="Name of the train dataset")
     parser.add_argument("--dataset-path", type=str, default="./images/train", help="Path to the train dataset")
-    parser.add_argument("--batch-size", type=int, default=2, help="Size of the batches")
+    parser.add_argument("--batch-size", type=int, default=64, help="Size of the batches")
     parser.add_argument("--lr", type=float, default=0.0001, help="Adams learning rate")
     args = parser.parse_args()
 

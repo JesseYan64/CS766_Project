@@ -17,7 +17,7 @@ def stitch_and_save_images(source_folder_a, target_folder_b, train_folder, test_
     images_b = sorted(glob.glob(f"{target_folder_b}/*.png"))
 
     # Split the images into training and testing sets
-    images_a_train, images_a_test, images_b_train, images_b_test = train_test_split(images_a, images_b, test_size=0.2, random_state=42)
+    images_a_train, images_a_test, images_b_train, images_b_test = train_test_split(images_a, images_b, test_size=0.01, random_state=42)
 
     # Stitch and save the training images
     stitch(images_a_train, images_b_train, train_folder)
