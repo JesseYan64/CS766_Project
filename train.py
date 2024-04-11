@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
     # Create the parser
     parser = argparse.ArgumentParser(prog ='top', description='Train Pix2Pix')
-    parser.add_argument("--epochs", type=int, default=1, help="Number of epochs")
+    parser.add_argument("--epochs", type=int, default=200, help="Number of epochs")
     parser.add_argument("--dataset", type=str, default="mask", help="Name of the train dataset")
     parser.add_argument("--dataset-path", type=str, default="./images/train", help="Path to the train dataset")
     parser.add_argument("--batch-size", type=int, default=64, help="Size of the batches")

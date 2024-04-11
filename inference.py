@@ -8,7 +8,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
 
-from dataset import mask
+from dataset import Mask
 from dataset import transforms as T
 from gan.generator import UnetGenerator
 
@@ -24,12 +24,11 @@ def test(output_folder):
     
     path_to_test = './images/test'
 
-    dataset = mask.Mask(path=path_to_test, transform=transforms, mode='test')
+    dataset = Mask(path=path_to_test, transform=transforms, mode='test')
     dataloader = DataLoader(dataset, batch_size=1, shuffle=True)
 
     count = 0
     for m, real in dataloader:
-        print(m.shape)
         # Convert the tensor to a numpy array and adjust the dimension order for matplotlib
         # The 'm' tensor is expected to be in the format [B, C, H, W], where
         # B = Batch size, C = Channels, H = Height, W = Width
