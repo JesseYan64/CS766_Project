@@ -22,7 +22,7 @@ def test(output_folder):
                             T.Normalize(mean=[0.5, 0.5, 0.5],
                                         std=[0.5, 0.5, 0.5])])
     
-    path_to_test = './images/test'
+    path_to_test = './data/test'
 
     dataset = Mask(path=path_to_test, transform=transforms, mode='test')
     dataloader = DataLoader(dataset, batch_size=1, shuffle=True)
