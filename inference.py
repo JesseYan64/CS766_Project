@@ -14,7 +14,7 @@ from gan.generator import UnetGenerator
 
 def test(output_folder):
     generator = UnetGenerator()
-    generator.load_state_dict(torch.load("./runs/generator.pt"))
+    generator.load_state_dict(torch.load("./runs/generator_200.pt"))
     generator.eval()
 
     transforms = T.Compose([T.Resize((256,256)),

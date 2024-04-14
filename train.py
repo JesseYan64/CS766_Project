@@ -37,11 +37,14 @@ def train(args):
     logger = Logger(filename=args.dataset)
 
     print('Training started')
-    for epoch in range(args.epochs):
+    logger.save_weights(generator.state_dict(), 'generator_0')
+    logger.save_weights(discriminator.state_dict(), 'discriminator_0')
+
+    for epoch in range(1, args.epochs + 1):
         ge_loss=0.
         de_loss=0.
         start = time.time()
-        bar = IncrementalBar(f'[Epoch {epoch+1}/{args.epochs}]', max=len(dataloader))
+        bar = IncrementalBar(f'[Epoch {epoch}/{args.epochs}]', max=len(dataloader))
         for x, real in dataloader:
             x = x.to(device)
             real = real.to(device)
@@ -77,11 +80,12 @@ def train(args):
         # count timeframe
         end = time.time()
         tm = (end - start)
-        logger.add_scalar('generator_loss', g_loss, epoch+1)
-        logger.add_scalar('discriminator_loss', d_loss, epoch+1)
-        logger.save_weights(generator.state_dict(), 'generator')
-        logger.save_weights(discriminator.state_dict(), 'discriminator')
-        print("[Epoch %d/%d] [G loss: %.3f] [D loss: %.3f] ETA: %.3fs" % (epoch+1, args.epochs, g_loss, d_loss, tm))
+        logger.add_scalar('generator_loss', g_loss, epoch)
+        logger.add_scalar('discriminator_loss', d_loss, epoch)
+        if epoch % 10 == 0:
+            logger.save_weights(generator.state_dict(), f'generator_{epoch}')
+            logger.save_weights(discriminator.state_dict(), f'discriminator_{epoch}')
+        print("[Epoch %d/%d] [G loss: %.3f] [D loss: %.3f] ETA: %.3fs" % (epoch, args.epochs, g_loss, d_loss, tm))
     logger.close()
     print('Training finished')
 
@@ -90,7 +94,7 @@ if __name__ == "__main__":
 
     # Create the parser
     parser = argparse.ArgumentParser(prog ='top', description='Train Pix2Pix')
-    parser.add_argument("--epochs", type=int, default=200, help="Number of epochs")
+    parser.add_argument("--epochs", type=int, default=1000, help="Number of epochs")
     parser.add_argument("--dataset", type=str, default="mask", help="Name of the train dataset")
     parser.add_argument("--dataset-path", type=str, default="./data/train", help="Path to the train dataset")
     parser.add_argument("--batch-size", type=int, default=64, help="Size of the batches")
