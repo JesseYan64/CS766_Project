@@ -11,10 +11,12 @@ import numpy as np
 from dataset import Mask
 from dataset import transforms as T
 from gan.generator import UnetGenerator
+from gan.cegan import Generator
 
 def test(output_folder):
-    generator = UnetGenerator()
-    generator.load_state_dict(torch.load("./runs/generator_20.pt"))
+    # generator = UnetGenerator()
+    generator = Generator()
+    generator.load_state_dict(torch.load("./runs/generator_30.pt"))
     generator.eval()
 
     transforms = T.Compose([T.Resize((256,256)),

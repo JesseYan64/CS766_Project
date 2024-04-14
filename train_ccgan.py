@@ -7,7 +7,7 @@ import argparse
 from progress.bar import IncrementalBar
 
 from dataset import transforms as T
-from gan.cegan import Generator, Discriminator
+from gan.ccgan import Generator, Discriminator
 from gan.criterion import GeneratorLoss, DiscriminatorLoss
 from gan.utils import Logger, initialize_weights
 
