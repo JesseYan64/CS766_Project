@@ -1,11 +1,10 @@
-import torch.nn as nn
-import torch.nn.functional as F
 import torch
+from torch import nn
+from torch.nn import functional as F
 
-
-class CEGenerator(nn.Module):
+class Generator(nn.Module):
     def __init__(self, channels=3):
-        super(CEGenerator, self).__init__()
+        super(Generator, self).__init__()
 
         def downsample(in_feat, out_feat, normalize=True):
             layers = [nn.Conv2d(in_feat, out_feat, 4, stride=2, padding=1)]
@@ -40,9 +39,9 @@ class CEGenerator(nn.Module):
         return self.model(x)
 
 
-class CEDiscriminator(nn.Module):
-    def __init__(self, channels=3):
-        super(CEDiscriminator, self).__init__()
+class Discriminator(nn.Module):
+    def __init__(self, channels=6):
+        super(Discriminator, self).__init__()
 
         def discriminator_block(in_filters, out_filters, stride, normalize):
             """Returns layers of each discriminator block"""
@@ -62,5 +61,6 @@ class CEDiscriminator(nn.Module):
 
         self.model = nn.Sequential(*layers)
 
-    def forward(self, img):
-        return self.model(img)
+    def forward(self, img, cond):
+        x = torch.cat([x, cond], dim=1)
+        return self.model(x)
