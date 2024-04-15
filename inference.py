@@ -14,9 +14,9 @@ from gan.generator import UnetGenerator
 from gan.cegan import Generator
 
 def test(output_folder):
-    # generator = UnetGenerator()
-    generator = Generator()
-    generator.load_state_dict(torch.load("./runs/generator_30.pt"))
+    generator = UnetGenerator()
+    # generator = Generator()
+    generator.load_state_dict(torch.load("./runs/generator_10.pt"))
     generator.eval()
 
     transforms = T.Compose([T.Resize((256,256)),
@@ -27,7 +27,7 @@ def test(output_folder):
     path_to_test = './data/test'
 
     dataset = Mask(path=path_to_test, transform=transforms, mode='test')
-    dataloader = DataLoader(dataset, batch_size=1, shuffle=True)
+    dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
 
     count = 0
     for m, real in dataloader:
