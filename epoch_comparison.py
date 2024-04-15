@@ -3,11 +3,12 @@ import glob
 
 from PIL import Image
 
+prefix = 'outputs/Pix2Pix_'
 
-folders = ['outputs/Pix2Pix_10', 'outputs/Pix2Pix_50', 'outputs/Pix2Pix_100', 'outputs/Pix2Pix_200', 'outputs/Pix2Pix_300', 'outputs/Pix2Pix_400', 'outputs/Pix2Pix_500']
-image_num = len(glob.glob(f"outputs/Pix2Pix_10/*.png"))
+folders = [f'{prefix}{i}' for i in [10, 50, 100, 200, 300, 400, 500]]
+image_num = len(glob.glob(f"{prefix}10/*.png"))
 
-output_folder = 'outputs/epoch_comparison'
+output_folder = f'{prefix}epoch_comparison'
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
