@@ -16,7 +16,7 @@ from gan.cegan import Generator
 def test(output_folder):
     generator = UnetGenerator()
     # generator = Generator()
-    generator.load_state_dict(torch.load("./runs/generator_10.pt"))
+    generator.load_state_dict(torch.load("./runs/pix2pix/generator_10.pt"))
     generator.eval()
 
     transforms = T.Compose([T.Resize((256,256)),
@@ -80,6 +80,6 @@ def clear_outputs(output_folder):
 
 
 if __name__ == "__main__":
-    output_folder="./outputs"
+    output_folder="./outputs/pix2pix"
     clear_outputs(output_folder)
     test(output_folder)

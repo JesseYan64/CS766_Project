@@ -7,7 +7,8 @@ import argparse
 from progress.bar import IncrementalBar
 
 from dataset import transforms as T
-from gan.cegan import Generator, Discriminator
+from gan.generator import UnetGenerator
+from gan.discriminator import ConditionalDiscriminator
 from gan.criterion import GeneratorLoss, DiscriminatorLoss
 from gan.utils import Logger, initialize_weights
 
@@ -21,8 +22,8 @@ def train(args):
                             T.Normalize(mean=[0.5, 0.5, 0.5],
                                         std=[0.5, 0.5, 0.5])])
     # models
-    generator = Generator().to(device)
-    discriminator = Discriminator().to(device)
+    generator = UnetGenerator().to(device)
+    discriminator = ConditionalDiscriminator().to(device)
     # optimizers
     g_optimizer = torch.optim.Adam(generator.parameters(), lr=args.lr, betas=(0.5, 0.999))
     d_optimizer = torch.optim.Adam(discriminator.parameters(), lr=args.lr, betas=(0.5, 0.999))
@@ -33,7 +34,7 @@ def train(args):
     dataset = Mask(path=args.dataset_path, transform=transforms, mode='train')
     dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
 
-    logger = Logger(filename=args.dataset, exp_name='./runs/cegan')
+    logger = Logger(filename=args.dataset, exp_name='./runs/pix2pix')
 
     print('Training started')
     logger.save_weights(generator.state_dict(), 'generator_0')
