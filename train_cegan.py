@@ -2,7 +2,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 import time
-import datetime
+import os
 import argparse
 from progress.bar import IncrementalBar
 
@@ -33,13 +33,31 @@ def train(args):
     dataset = Mask(path=args.dataset_path, transform=transforms, mode='train')
     dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
 
-    logger = Logger(filename=args.dataset, exp_name='./runs/cegan')
+    logger = Logger(exp_name='./runs/cegan', filename='cegan')
+
+    total_time = 0
+    epoch_start = 0
+    # Whether has a checkpoint
+    if os.path.exists('./runs/cegan/checkpoint.pt'):
+        checkpoint = torch.load('./runs/cegan/checkpoint.pt')
+        generator.load_state_dict(checkpoint['generator'])
+        discriminator.load_state_dict(checkpoint['discriminator'])
+        g_optimizer.load_state_dict(checkpoint['g_optimizer'])
+        d_optimizer.load_state_dict(checkpoint['d_optimizer'])
+        epoch_start = checkpoint['epoch']
+        total_time = checkpoint['total_time']
+        g_loss = checkpoint['g_loss']
+        d_loss = checkpoint['d_loss']
+        logger.add_scalar('generator_loss', g_loss, epoch_start)
+        logger.add_scalar('discriminator_loss', d_loss, epoch_start)
+        print(f"Resuming training from epoch {epoch_start}")
+    else:
+        logger.save_weights(generator.state_dict(), 'generator_0')
+        logger.save_weights(discriminator.state_dict(), 'discriminator_0')
 
     print('Training started')
-    logger.save_weights(generator.state_dict(), 'generator_0')
-    logger.save_weights(discriminator.state_dict(), 'discriminator_0')
 
-    for epoch in range(1, args.epochs + 1):
+    for epoch in range(epoch_start + 1, args.epochs + 1):
         ge_loss=0.
         de_loss=0.
         start = time.time()
@@ -79,14 +97,29 @@ def train(args):
         # count timeframe
         end = time.time()
         tm = (end - start)
-        logger.add_scalar('generator_loss', g_loss, epoch)
-        logger.add_scalar('discriminator_loss', d_loss, epoch)
+        total_time += tm
+        logger.save_weights(generator.state_dict(), f'generator')
+        logger.save_weights(discriminator.state_dict(), f'discriminator')
         if epoch % 10 == 0:
             logger.save_weights(generator.state_dict(), f'generator_{epoch}')
             logger.save_weights(discriminator.state_dict(), f'discriminator_{epoch}')
+        torch.save({'epoch': epoch,
+                    'generator': generator.state_dict(),
+                    'discriminator': discriminator.state_dict(),
+                    'g_optimizer': g_optimizer.state_dict(),
+                    'd_optimizer': d_optimizer.state_dict(),
+                    'g_loss': g_loss,
+                    'd_loss': d_loss,
+                    'total_time': total_time
+                    }, './runs/cegan/checkpoint.pt')
+        logger.add_scalar('generator_loss', g_loss, epoch)
+        logger.add_scalar('discriminator_loss', d_loss, epoch)
         print("[Epoch %d/%d] [G loss: %.3f] [D loss: %.3f] ETA: %.3fs" % (epoch, args.epochs, g_loss, d_loss, tm))
     logger.close()
     print('Training finished')
+    logger.add_scalar('total_time', total_time, args.epochs)
+    print(f"Total time: {total_time}")
+    logger.close()
 
 if __name__ == "__main__":
     import argparse

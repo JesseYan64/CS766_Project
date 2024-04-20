@@ -17,24 +17,25 @@ class Logger():
                  exp_name: str='./runs',
                  filename: str=None):
         self.exp_name=exp_name
+        self.filename=filename
         self.cache={}
         if not os.path.exists(exp_name):
             os.makedirs(exp_name, exist_ok=True)
-        self.date=datetime.today().strftime("%B_%d_%Y_%I_%M%p")
-        if filename is None:
-            self.filename=self.date
-        else:
-            self.filename="_".join([self.date, filename])
         fpath = f"{self.exp_name}/{self.filename}.json"
+        if os.path.exists(fpath):
+            with open(fpath, 'r') as f:
+                data = f.read()
+                print(data)
+                self.cache = json.loads(data)
         with open(fpath, 'w') as f:
             data = json.dumps(self.cache)
             f.write(data)
         
     def add_scalar(self, key: str, value: float, t: int):
-        if key in self.cache:
-            self.cache[key][t] = value
-        else:
-            self.cache[key] = {t:value}
+        t = str(t)
+        if key not in self.cache:
+            self.cache[key] = {}
+        self.cache[key][t] = value
         self.update()
         return None
     

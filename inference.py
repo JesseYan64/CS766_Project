@@ -13,18 +13,18 @@ from dataset import transforms as T
 from gan.generator import UnetGenerator
 from gan.cegan import Generator
 
-def test(output_folder):
-    generator = UnetGenerator()
-    # generator = Generator()
-    generator.load_state_dict(torch.load("./runs/pix2pix/generator_10.pt"))
+def test(output_folder, path_to_test='./data/test', cegan=False, model_path=None):
+    if cegan:
+        generator = Generator()
+    else:
+        generator = UnetGenerator()
+    generator.load_state_dict(torch.load(model_path))
     generator.eval()
 
     transforms = T.Compose([T.Resize((256,256)),
                             T.ToTensor(),
                             T.Normalize(mean=[0.5, 0.5, 0.5],
                                         std=[0.5, 0.5, 0.5])])
-    
-    path_to_test = './data/test'
 
     dataset = Mask(path=path_to_test, transform=transforms, mode='test')
     dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
@@ -80,6 +80,11 @@ def clear_outputs(output_folder):
 
 
 if __name__ == "__main__":
-    output_folder="./outputs/pix2pix"
-    clear_outputs(output_folder)
-    test(output_folder)
+    model = 'pix2pix'
+    epoch = 10
+    output_folder=f"./outputs/{model}/{model}_{epoch}"
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    else:
+        clear_outputs(output_folder)
+    test(output_folder, dataset_path='./data/test', cegan=False, model_path=f'./runs/{model}/generator_{epoch}.pt')
