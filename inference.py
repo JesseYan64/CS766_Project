@@ -70,7 +70,8 @@ def test(output_folder, path_to_test='./data/test', cegan=False, model_path=None
         # plt.imshow(generated_image.numpy())
         stitched_image.paste(Image.fromarray((generated_image * 255).astype('uint8')), (test_width, 0))
         stitched_image.paste(real_image, (test_width * 2, 0))
-        stitched_image.save(os.path.join(output_folder, f"{count}.png"))
+        # stitched_image.save(os.path.join(output_folder, f"{count}.png"))
+        Image.fromarray((generated_image * 255).astype('uint8')).save(os.path.join(output_folder, f"{count}.png"))
         count += 1
 
 
@@ -80,11 +81,11 @@ def clear_outputs(output_folder):
 
 
 if __name__ == "__main__":
-    model = 'pix2pix'
-    epoch = 10
-    output_folder=f"./outputs/{model}/{model}_{epoch}"
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-    else:
-        clear_outputs(output_folder)
-    test(output_folder, dataset_path='./data/test', cegan=False, model_path=f'./runs/{model}/generator_{epoch}.pt')
+    model = 'cegan'
+    for epoch in [10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]:
+        output_folder=f"./outputs/{model}/{model}_{epoch}"
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+        else:
+            clear_outputs(output_folder)
+        test(output_folder, path_to_test='./data/test', cegan=True, model_path=f'./runs/{model}/generator_{epoch}.pt')

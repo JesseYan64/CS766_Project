@@ -1,11 +1,18 @@
 import os
 import glob
+from dataset import Mask
+from dataset import transforms as T
+from torch.utils.data import DataLoader
+from torchvision.transforms import Compose, Resize, ToTensor, Normalize
 
 from PIL import Image
 
-prefix = 'outputs/Pix2Pix_'
+prefix = 'outputs/cegan/cegan_'
+path_to_test = './data/test'
 
-folders = [f'{prefix}{i}' for i in [10, 50, 100, 200, 300, 400, 500]]
+epochs = [10, 50]
+
+folders = [f'{prefix}{i}' for i in epochs]
 image_num = len(glob.glob(f"{prefix}10/*.png"))
 
 output_folder = f'{prefix}epoch_comparison'
@@ -14,17 +21,32 @@ if not os.path.exists(output_folder):
 
 print(image_num)
 
-for i in range(0, image_num):
+transforms = T.Compose([T.Resize((256,256)),
+                        T.ToTensor(),
+                        T.Normalize(mean=[0.5, 0.5, 0.5],
+                                    std=[0.5, 0.5, 0.5])])
+
+dataset = Mask(path=path_to_test, transform=transforms, mode='test')
+dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
+
+i = 0
+for m, real in dataloader:
+    test_image_to_plot = m[0].numpy().transpose(1, 2, 0)
+    real_image_to_plot = real[0].numpy().transpose(1, 2, 0)
+    test_image_to_plot = (test_image_to_plot - test_image_to_plot.min()) / (test_image_to_plot.max() - test_image_to_plot.min())
+    real_image_to_plot = (real_image_to_plot - real_image_to_plot.min()) / (real_image_to_plot.max() - real_image_to_plot.min())
+
+    masked = Image.fromarray((test_image_to_plot * 255).astype('uint8'))
+    target = Image.fromarray((real_image_to_plot * 255).astype('uint8'))
+
     stitched_image = Image.new('RGB', (256 * (len(folders) + 2), 256))
+
     for j, folder in enumerate(folders):
         img_path = f"{folder}/{i}.png"
-        img = Image.open(img_path).convert('RGB')
-        W, H = img.size
-        cW = W//3
-        masked = img.crop((0, 0, cW, H))
-        generated = img.crop((cW, 0, cW * 2, H))
-        target = img.crop((cW * 2, 0, W, H))
+        generated = Image.open(img_path).convert('RGB')
         stitched_image.paste(generated, (256 * (j + 1), 0))
+
     stitched_image.paste(masked, (0, 0))
     stitched_image.paste(target, (256 * (len(folders) + 1), 0))
     stitched_image.save(os.path.join(output_folder, f"{i}.png"))
+    i += 1
