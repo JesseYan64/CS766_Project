@@ -5,6 +5,7 @@ We provided a requirements.txt for recreating the virtual environment.
 python3 -m venv cv
 source ./cv/bin/activate
 pip install -r requirements.txt
+pip3 install torch torchvision torchaudio
 ```
 
 The dataset is the images directory, where no_cover is the origional images, with_mask is the origional images with masks, and r_cover is the origional images with random covering. train_test_split was performed and train/test folders were generated. In these two folder the images from no_cover and with_mask are stitched together. train_r/test_r are from no_cover and r_cover.
