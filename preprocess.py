@@ -45,9 +45,9 @@ def stitch(source_arr, target_arr, target_folder):
 
 
 if __name__ == "__main__":
-    source_folder_X = 'data/with_mask'
-    source_folder_y = 'data/no_mask'
-    train_folder = 'data/train'
-    test_folder = 'data/test'
+    source_folder_X = 'data/r_cover'
+    source_folder_y = 'data/no_cover'
+    train_folder = 'data/train_r'
+    test_folder = 'data/test_r'
 
     stitch_and_save_images(source_folder_X, source_folder_y, train_folder, test_folder)
