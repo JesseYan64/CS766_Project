@@ -34,12 +34,14 @@ def train(args):
     dataset = Mask(path=args.dataset_path, transform=transforms, mode='train')
     dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
 
-    logger = Logger(exp_name='./runs/pix2pix', filename='pix2pix')
+    sub_dir = args.output
+
+    logger = Logger(exp_name=f'./runs/{sub_dir}', filename=sub_dir)
     total_time = 0
     epoch_start = 0
     # Whether has a checkpoint
-    if os.path.exists('./runs/pix2pix/checkpoint.pt'):
-        checkpoint = torch.load('./runs/pix2pix/checkpoint.pt')
+    if os.path.exists(f'./runs/{sub_dir}/checkpoint.pt'):
+        checkpoint = torch.load(f'./runs/{sub_dir}/checkpoint.pt')
         generator.load_state_dict(checkpoint['generator'])
         discriminator.load_state_dict(checkpoint['discriminator'])
         g_optimizer.load_state_dict(checkpoint['g_optimizer'])
@@ -111,7 +113,7 @@ def train(args):
                     'g_loss': g_loss,
                     'd_loss': d_loss,
                     'total_time': total_time
-                    }, './runs/pix2pix/checkpoint.pt')
+                    }, f'./runs/{sub_dir}/checkpoint.pt')
         logger.add_scalar('generator_loss', g_loss, epoch)
         logger.add_scalar('discriminator_loss', d_loss, epoch)
         print("[Epoch %d/%d] [G loss: %.3f] [D loss: %.3f] ETA: %.3fs" % (epoch, args.epochs, g_loss, d_loss, tm))
@@ -128,6 +130,7 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, default=1000, help="Number of epochs")
     parser.add_argument("--dataset", type=str, default="mask", help="Name of the train dataset")
     parser.add_argument("--dataset-path", type=str, default="./data/train", help="Path to the train dataset")
+    parser.add_argument("--output", type=str, default="pix2pix", help="Output")
     parser.add_argument("--batch-size", type=int, default=64, help="Size of the batches")
     parser.add_argument("--lr", type=float, default=0.0001, help="Adams learning rate")
     args = parser.parse_args()
