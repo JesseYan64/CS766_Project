@@ -7,16 +7,31 @@ source ./cv/bin/activate
 pip install -r requirements.txt
 ```
 
-The dataset is the images directory, where no_mask is the origional images and with_mask is the origional images with masks. train_test_split was performed and train/test folders were generated. In these two folder the images from no_mask and with_mask are stitched together.
+The dataset is the images directory, where no_cover is the origional images, with_mask is the origional images with masks, and r_cover is the origional images with random covering. train_test_split was performed and train/test folders were generated. In these two folder the images from no_cover and with_mask are stitched together. train_r/test_r are from no_cover and r_cover.
 
 To preprocess the dataset, run
 ```
 python preprocess.py
 ```
 
-To train, run
+To train Pix2Pix, run
 ```
-python train.py
+python train_pix2pix.py
+```
+
+To train Pix2Pix on random covering, run
+```
+python train_pix2pix.py --dataset-path=./data/train_r --output=pix2pix_r
+```
+
+To train CEGAN, run
+```
+python train_cegan.py
+```
+
+To train CEGAN on random covering, run
+```
+python train_cegan.py --dataset-path=./data/train_r --output=cegan_r
 ```
 
 To do inference, run
