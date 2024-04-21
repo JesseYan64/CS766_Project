@@ -117,7 +117,6 @@ def train(args):
         logger.add_scalar('generator_loss', g_loss, epoch)
         logger.add_scalar('discriminator_loss', d_loss, epoch)
         print("[Epoch %d/%d] [G loss: %.3f] [D loss: %.3f] ETA: %.3fs" % (epoch, args.epochs, g_loss, d_loss, tm))
-    logger.close()
     print('Training finished')
     logger.add_scalar('total_time', total_time, args.epochs)
     print(f"Total time: {total_time}")
