@@ -81,7 +81,7 @@ def clear_outputs(output_folder):
 
 
 if __name__ == "__main__":
-    # You have four options here, according to what you have in runs: 'pix2pix', 'cegan', 'pix2pix_r', 'cegan_r'
+    # You have four options here, according to what you have in runs: 'pix2pix', 'cegan', 'pix2pix_r', 'cegan_r'. Note that '_r' means random covering.
     model = 'cegan'
 
     # Specify the epochs you want to use for generating the images
