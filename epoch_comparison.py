@@ -7,14 +7,21 @@ from torchvision.transforms import Compose, Resize, ToTensor, Normalize
 
 from PIL import Image
 
+# Set the path to the output folders, it has to be the prefix of the epochs folders
 prefix = 'outputs/cegan/cegan_'
+
+# Set the path to the test folder, for getting the real and masked images
 path_to_test = './data/test'
 
+# Set the epochs to compare
 epochs = [10, 50]
+
+# In the end the output would be masked, generated images and the real image, stitched together
 
 folders = [f'{prefix}{i}' for i in epochs]
 image_num = len(glob.glob(f"{prefix}10/*.png"))
 
+# You can find the output in the epoch_comparison folder, which locates in the same directory as epochs folders
 output_folder = f'{prefix}epoch_comparison'
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)

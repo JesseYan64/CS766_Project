@@ -81,8 +81,12 @@ def clear_outputs(output_folder):
 
 
 if __name__ == "__main__":
+    # You have four options here, according to what you have in runs: 'pix2pix', 'cegan', 'pix2pix_r', 'cegan_r'
     model = 'cegan'
-    for epoch in [10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]:
+
+    # Specify the epochs you want to use for generating the images
+    epochs = [10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+    for epoch in epochs:
         output_folder=f"./outputs/{model}/{model}_{epoch}"
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
