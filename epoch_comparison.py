@@ -10,7 +10,7 @@ from PIL import Image
 # Set the path to the output folders, it has to be the prefix of the epochs folders
 prefix = 'outputs/cegan/cegan_'
 
-# Set the path to the test folder, for getting the real and masked images
+# test if masked, test_r if random covering.
 path_to_test = './data/test'
 
 # Set the epochs to compare
