@@ -18,7 +18,7 @@ def test(output_folder, path_to_test='./data/test', cegan=False, model_path=None
         generator = Generator()
     else:
         generator = UnetGenerator()
-    generator.load_state_dict(torch.load(model_path))
+    generator.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
     generator.eval()
 
     transforms = T.Compose([T.Resize((256,256)),
