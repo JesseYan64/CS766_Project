@@ -61,7 +61,4 @@ if __name__ == "__main__":
 
     epoch = 1000
 
-    # Specify the epochs you want to use for generating the images
-    epochs = [10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-
     test(output, path_to_image, cegan=True, model_path=f'./runs/{model}/generator_{epoch}.pt')
