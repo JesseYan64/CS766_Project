@@ -42,6 +42,8 @@ def inference_image():
 
     # Now we create an Image object and save it
     image = Image.open(BytesIO(image_data))
+    if image.mode == 'RGBA':
+        image = image.convert('RGB')
     image.save(image_name)
     print("Photo saved locally")
 
