@@ -1,5 +1,5 @@
 from flask import Flask, send_file,request
-import inference
+import inference_web
 from datetime import datetime
 import os
 
@@ -11,7 +11,7 @@ app = Flask(__name__)
 def hello():
     return 'Hello, World!'
 
-@app.route('/inference')
+@app.route('/inference' , methods=['POST'])
 def inference_image():
     output_folder = "./outputs/server_output"
     path_to_test = './data/test_small'
@@ -26,7 +26,8 @@ def inference_image():
     os.mkdir(image_path)
 
 
-    image_name = image_path + '/' +  current_time + '.png'
+    image_name = image_path + '/' +  current_time + '.jpg'
+    output_image_name = output_folder +  '/' +  current_time + '.jpg'
 
 
 
@@ -36,9 +37,9 @@ def inference_image():
     photo.save(image_name)
     print("photo saved")
 
-    inference.test(output_folder, image_path, cegan=True, model_path=model_path)
+    inference_web.test(output_image_name, image_name, cegan=True, model_path=model_path)
 
-    return send_file('outputs/server_output/0.png', mimetype='image/jpeg')
+    return send_file('', mimetype='image/jpeg')
 
 @app.route('/upload', methods=['POST'])
 def upload():

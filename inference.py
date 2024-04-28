@@ -14,6 +14,7 @@ from gan.generator import UnetGenerator
 from gan.cegan import Generator
 
 def test(output_folder, path_to_test='./data/test', cegan=False, model_path=None):
+    print("input path", path_to_test, "output path", output_folder)
     if cegan:
         generator = Generator()
     else:

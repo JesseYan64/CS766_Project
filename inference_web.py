@@ -11,7 +11,7 @@ def test(output, path_to_image=None, cegan=False, model_path=None):
         generator = Generator()
     else:
         generator = UnetGenerator()
-    generator.load_state_dict(torch.load(model_path))
+    generator.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
     generator.eval()
 
     transforms = T.Compose([T.Resize((256,256)),
@@ -48,7 +48,7 @@ def test(output, path_to_image=None, cegan=False, model_path=None):
     # Display the generated image
 
     # plt.imshow(generated_image.numpy())
-    Image.fromarray((generated_image * 255).astype('uint8')).save(output)
+    Image.fromarray((generated_image * 255).astype('uint8')).save(output, 'JPEG')
 
 
 if __name__ == "__main__":
