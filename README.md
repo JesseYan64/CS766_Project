@@ -14,6 +14,7 @@ To preprocess the dataset, run
 ```
 python preprocess.py
 ```
+source_folder_X is the input directory, source_folder_y is the target directory, train_folder is the directory to store training data, and test_folder is the directory to store testing data.
 
 To train Pix2Pix, run
 ```
