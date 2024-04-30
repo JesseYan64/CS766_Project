@@ -39,6 +39,7 @@ To do inference, run
 ```
 python inference.py
 ```
+Note that you need to change parameters, including 'model', 'cegan' and 'path_to_test'.
 
 You can find the dataset via this [link](https://drive.google.com/drive/folders/1B1QefmIljQ6Kr1rkIY2jF5YtAwCG1XB7?usp=sharing). It has no_cover, with_mask, r_cover, and train/test for these images.
 
