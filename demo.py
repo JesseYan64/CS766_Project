@@ -20,10 +20,10 @@ transforms = T.Compose([T.Resize((256,256)),
 
 fontsize = 10
 
-f, axarr = plt.subplots(1, 2)
+f, axarr = plt.subplots(1, 3)
 
 # Test image
-img = Image.open('./data/test/001162.png').convert('RGB')
+img = Image.open('./data/test/000685.png').convert('RGB')
 W, H = img.size
 cW = W//2
 imgA = img.crop((0, 0, cW, H))
@@ -40,7 +40,7 @@ masked = Image.fromarray((test_image_to_plot * 255).astype('uint8'))
 target = Image.fromarray((real_image_to_plot * 255).astype('uint8'))
 
 # Generated image
-img_path_1 = f"outputs/cegan/cegan_1000/353.png"
+img_path_1 = f"outputs/cegan/cegan_1000/208.png"
 generated = Image.open(img_path_1).convert('RGB')
 axarr[1].imshow(generated)
 axarr[1].axis('off')
@@ -50,4 +50,8 @@ axarr[0].imshow(masked)
 axarr[0].axis('off')
 axarr[0].set_title('Random', fontsize=fontsize)
 
-plt.savefig(os.path.join(output_folder, f"demo4.png"), bbox_inches='tight', dpi=350)
+axarr[2].imshow(target)
+axarr[2].axis('off')
+axarr[2].set_title('Target', fontsize=fontsize)
+
+plt.savefig(os.path.join(output_folder, f"demo3.png"), bbox_inches='tight', dpi=350)
