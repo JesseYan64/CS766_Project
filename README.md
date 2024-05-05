@@ -62,3 +62,6 @@ You can find the dataset via this [link](https://drive.google.com/drive/folders/
 Trained model can be found in this [link](https://drive.google.com/drive/folders/1OA2VwcP72DmbmBsy8bW5UjgKZYQ4ublk?usp=drive_link). To use this model, download the 'runs' directory along with the models in it and place this directory into the root of this git repo.
 
 The output folder is the inference result based on data/test and data/test_r folder. We use the images with the mask to perform the inference and the images without the mask are for reference. You can find the output via this [link](https://drive.google.com/drive/folders/1Z7vLgt9IQHN2ofBcEFTLW_DSRurLcmRk?usp=sharing).
+
+References:
+1. https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/context_encoder/models.py
