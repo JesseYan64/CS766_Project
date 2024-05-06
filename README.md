@@ -67,4 +67,3 @@ References:
 1. https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/context_encoder/models.py
 2. https://github.com/akanametov/pix2pix
 3. https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html
-4. The pix2pix code is using `https://github.com/akanametov/pix2pix` as reference
