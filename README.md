@@ -65,3 +65,5 @@ The output folder is the inference result based on data/test and data/test_r fol
 
 References:
 1. https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/context_encoder/models.py
+2. https://github.com/akanametov/pix2pix
+3. https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html
